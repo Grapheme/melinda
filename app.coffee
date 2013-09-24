@@ -25,20 +25,22 @@ app.use app.router
 app.use express.static app.get "public"
 app.use express.errorHandler()
 
-# Настройка роутинга
-app.get "/:id?", (req, res) ->
-	res.sendfile path.join (app.get "public"), "index.html" 
 
 #  Обработчики ставим, соответствуя модели REST/CRUD
-files = require "./routes/files"
+files = require "./models/files"
 app.post 	"/files", 		files.upload
 app.get  	"/files/:id", 	files.get
 
-scopes = require "./routes/scopes"
+scopes = require "./models/scopes"
 app.put  	"/scopes", 	 	scopes.create
 app.get  	"/scopes/:id", 	scopes.read
 app.post 	"/scopes/:id",	scopes.update
 app.delete 	"/scopes/:id", 	scopes.delete
+
+
+# Настройка роутинга
+app.get "/:id?", (req, res) ->
+	res.sendfile path.join (app.get "public"), "index.html" 
 
 
 app.listen (app.get "port"), ->
