@@ -3,7 +3,6 @@ consolidate = require "consolidate"
 path 		= require "path"
 fs 			= require "fs"
 _ 			= require "underscore"
-uuid 		= require "node-uuid"
 cradle  	= require "cradle"
 
 app = express()
@@ -12,8 +11,7 @@ app = express()
 app.set "port", process.env.PORT || 3000
 app.set "public", path.join __dirname, "public"
 
-
-# Настройки шаблонизатора
+# Настройка движка шаблонизатора
 app.engine "html", consolidate.swig
 app.set "view engine", "html"
 app.set "views", app.get "public"
@@ -27,24 +25,24 @@ app.use app.router
 app.use express.static app.get "public"
 app.use express.errorHandler()
 
-## Роутинг!
+# Настройка роутинга
 app.get "/:id?", (req, res) ->
-	res.render "index", {}
+	res.sendfile path.join (app.get "public"), "index.html" 
+
+#  Обработчики ставим, соответствуя модели REST/CRUD
+files = require "./routes/files"
+app.post 	"/files", 		files.upload
+app.get  	"/files/:id", 	files.get
+
+scopes = require "./routes/scopes"
+app.put  	"/scopes", 	 	scopes.create
+app.get  	"/scopes/:id", 	scopes.read
+app.post 	"/scopes/:id",	scopes.update
+app.delete 	"/scopes/:id", 	scopes.delete
 
 
-scopes = new(cradle.Connection)().database "scopes"
-
-app.get "/scopes/:id?", (req, res) ->
-	id = req.params.id
-
-	scopes.get id, (err, doc) ->
-		res.json doc
-
-upload = require "./routes/upload"
-app.post "/upload", 	upload.upload
-app.get  "/upload/:id", upload.download
-
-app.listen app.get "port"
+app.listen (app.get "port"), ->
+	console.log "Server started at port #{ app.get('port') }"
 
 
 

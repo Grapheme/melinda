@@ -6,20 +6,28 @@ _ 		= require "underscore"
 
 db = new(cradle.Connection)().database "files"
 
+
+# Обработчик загрузки файлов
 module.exports.upload = (req, res) ->
+
+	# Готовим список загруженных файлов 
+	# (их может быть больше одного!)
 	files = _([ req.files.file ]).flatten()
 
 	if files.length <= 0
 		throw new Error "Invalid arguments!"
 
+	# Функция, удаляющая временные файлы
 	cleanup = ->
 		_(files).each (f) ->
 			fs.unlink f.path
 
+	# Берем только первый файл
 	file = files[0]
 
 	mimeType = file.headers['content-type']
 			
+	# Сохраняем документ, соответствующий файлу
 	db.save 
 		mime : mimeType
 	, (err, result) ->
@@ -31,6 +39,7 @@ module.exports.upload = (req, res) ->
 			name: file.originalFilename
 			"Content-Type" : file.headers['content-type']
 
+		# Сохраняем тело файла в базу, используя streaming
 		writeStream = db.saveAttachment result.id, attachmentData, (err, result) ->
 			if err
 				do cleanup
@@ -43,7 +52,8 @@ module.exports.upload = (req, res) ->
 		readStream.pipe writeStream
 
 
-module.exports.download = (req, res) ->
+# Обработчик получения файла по его id
+module.exports.get = (req, res) ->
 	id = req.params.id
 
 	db.get id, (err, doc) ->

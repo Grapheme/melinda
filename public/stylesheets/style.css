@@ -10,3 +10,9 @@ body, html {
   margin: 0;
   padding: 0;
 }
+
+.overlay {
+	position : absolute;
+	z-index: 2;
+	color : white;
+}

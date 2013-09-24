@@ -50,8 +50,8 @@ function init(payload) {
 
     var container = $("#container");
 
-    var imageSrc = "upload/" + payload.image;
-    var musicSrc = "upload/" + payload.music;
+    var imageSrc = "files/" + payload.image;
+    var musicSrc = "files/" + payload.music;
 
     new Graphemescope(container[0], imageSrc, musicSrc);
 
