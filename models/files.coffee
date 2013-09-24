@@ -8,14 +8,14 @@ db = new(cradle.Connection)().database "files"
 
 
 # Обработчик загрузки файлов
-module.exports.upload = (req, res) ->
+module.exports.upload = (req, res, next) ->
 
 	# Готовим список загруженных файлов 
 	# (их может быть больше одного!)
 	files = _([ req.files.file ]).flatten()
 
 	if files.length <= 0
-		throw new Error "Invalid arguments!"
+		return next new Error "Invalid arguments!"
 
 	# Функция, удаляющая временные файлы
 	cleanup = ->
@@ -33,7 +33,7 @@ module.exports.upload = (req, res) ->
 	, (err, result) ->
 		if err 
 			do cleanup
-			throw err
+			return next new Error "Error saving document #{err.error}"
 
 		attachmentData = 
 			name: file.originalFilename
@@ -43,7 +43,7 @@ module.exports.upload = (req, res) ->
 		writeStream = db.saveAttachment result.id, attachmentData, (err, result) ->
 			if err
 				do cleanup
-				throw err
+				return next(err.error)
 
 			res.json
 				id : result.id
@@ -53,12 +53,12 @@ module.exports.upload = (req, res) ->
 
 
 # Обработчик получения файла по его id
-module.exports.get = (req, res) ->
+module.exports.get = (req, res, next) ->
 	id = req.params.id
 
 	db.get id, (err, doc) ->
 		if err
-			throw err
+			return next new Error "Error getting file #{err.error}"
 
 		attachmentName = _(doc._attachments).keys()[0]
 

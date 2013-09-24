@@ -1,9 +1,9 @@
-express 	= require "express"
+express     = require "express"
 consolidate = require "consolidate"
-path 		= require "path"
-fs 			= require "fs"
-_ 			= require "underscore"
-cradle  	= require "cradle"
+path        = require "path"
+fs          = require "fs"
+_           = require "underscore"
+cradle      = require "cradle"
 
 app = express()
 
@@ -15,6 +15,7 @@ app.set "public", path.join __dirname, "public"
 app.engine "html", consolidate.swig
 app.set "view engine", "html"
 app.set "views", app.get "public"
+
 
 # Настройка middleware
 app.use express.favicon()
@@ -28,28 +29,26 @@ app.use express.errorHandler()
 
 #  Обработчики ставим, соответствуя модели REST/CRUD
 files = require "./models/files"
-app.post 	"/files", 		files.upload
-app.get  	"/files/:id", 	files.get
+app.post    "/files",       files.upload
+app.get     "/files/:id",   files.get
 
 scopes = require "./models/scopes"
-app.put  	"/scopes", 	 	scopes.create
-app.get  	"/scopes/:id", 	scopes.read
-app.post 	"/scopes/:id",	scopes.update
-app.delete 	"/scopes/:id", 	scopes.delete
+app.put     "/scopes",      scopes.create
+app.get     "/scopes/:id",  scopes.read
+app.post    "/scopes/:id",  scopes.update
+app.delete  "/scopes/:id",  scopes.delete
 
 
-# Настройка роутинга
 app.get "/:id?", (req, res) ->
-	res.sendfile path.join (app.get "public"), "index.html" 
-
+    res.sendfile path.join (app.get "public"), "index.html" 
 
 app.listen (app.get "port"), ->
-	console.log "Server started at port #{ app.get('port') }"
+    console.log "Server started at port #{ app.get('port') }"
 
 
 
 
 
 
-		
+        
 
