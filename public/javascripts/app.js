@@ -6,8 +6,6 @@ $(function() {
     window.model = {};
 
     var createNewScope = function(callback) {
-        if( model._id !== "default" ) return callback();
-
         $.ajax({
             type : "PUT",
             data : model,
@@ -15,7 +13,7 @@ $(function() {
         })
         .done(function(data) {
             model = data;
-            page("/" + model._id);
+            page.show("/" + model._id, {}, false);
             callback();
         })
         .fail(function(err) {
@@ -80,10 +78,7 @@ $(function() {
                         scope.setImage("files/" + data._id);
                     });
                 }
-
-          
             });
-
         }); 
     });
     
