@@ -46,7 +46,7 @@ module.exports.upload = (req, res, next) ->
 				return next(err.error)
 
 			res.json
-				id : result.id
+				_id : result.id
 
 		readStream = fs.createReadStream file.path
 		readStream.pipe writeStream

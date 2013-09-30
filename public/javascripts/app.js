@@ -57,7 +57,7 @@ $(function() {
                 contentType: false,
                 data: formData
             }).done(function(data) {
-                var imageSrc = "files/" + data.id;
+                var imageSrc = "files/" + data._id;
 
                 var type = files[0].type.substring(0, 5);
                 
@@ -65,9 +65,9 @@ $(function() {
                     console.log("Set audio");
 
                     $.post('scopes/' + model._id, {
-                       'music' : data.id 
+                       'audio' : data._id 
                     }).done(function() {
-                        scope.setAudio("files/" + data.id);
+                        scope.setAudio("files/" + data._id);
                     });
                 }
 
@@ -75,9 +75,9 @@ $(function() {
                     console.log("Set image");
                     
                     $.post('scopes/' + model._id, {
-                       'image' : data.id 
+                       'image' : data._id 
                     }).done(function() {
-                        scope.setImage("files/" + data.id);
+                        scope.setImage("files/" + data._id);
                     });
                 }
 
@@ -97,14 +97,13 @@ $(function() {
             console.log(model);
 
             scope.setImage("files/" + model.image);
-            scope.setAudio("files/" + model.music);
+            scope.setAudio("files/" + model.audio);
         })
         .fail(function() {
             page("/");
         });
     });
     page();
-
 
     var container = $("#container");
     

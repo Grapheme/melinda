@@ -21,9 +21,9 @@ generateId = (callback) ->
 
 exports.create = (req, res, next) ->
     createdDoc = _(req.body).chain()
-        .pick(["music", "image"])
+        .pick(["audio", "image"])
         .defaults
-            music : "default_music"
+            audio : "default_audio"
             image : "default_image"
         .value()
 
@@ -32,13 +32,13 @@ exports.create = (req, res, next) ->
             if err 
                 return next new Error "Error saving document #{err.error}"
                 
-            res.json _(doc).pick([ "music", "image", "_id"])
+            res.json _(doc).pick([ "audio", "image", "_id"])
 
 exports.update = (req, res, next) ->
     id = req.params.id
 
     # Берем только поля, доступные для редактирования
-    mergeFields = _(req.body).pick([ "music", "image"])
+    mergeFields = _(req.body).pick([ "audio", "image"])
 
     scopes.merge id, mergeFields, (err, doc) ->
         if err 
@@ -53,7 +53,8 @@ exports.read = (req, res, next) ->
         if err 
             return next new Error "Error getting document #{err.error}"
 
-        res.json _(doc).pick([ "music", "image", "_id" ])
+        res.json _(doc).pick([ "audio", "image", "_id" ])
 
 exports.delete = (req, res, next) ->
     return next "Not yet implemented!"
+    
