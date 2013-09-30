@@ -10,6 +10,7 @@
     "underscore": "~1.5.2",
     "cradle": "~0.6.6",
     "consolidate": "~0.9.1",
-    "swig": "~1.0.0"
+    "swig": "~1.0.0",
+    "hashids": "~0.3.1"
   }
 }

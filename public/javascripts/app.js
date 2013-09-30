@@ -1,85 +1,120 @@
+// Делает контейнер калейдоскопа на всю страницу
 $(function() {
     container = $('#container');
 
-    window.kaleidoscope = new Kaleidoscope( container[0] );
+    window.scope = new Graphemescope( document.getElementById("container") );
+    window.model = {};
 
+    var createNewScope = function(callback) {
+        if( model._id !== "default" ) return callback();
+
+        $.ajax({
+            type : "PUT",
+            data : model,
+            url  : "/scopes"
+        })
+        .done(function(data) {
+            model = data;
+            page("/" + model._id);
+            callback();
+        })
+        .fail(function(err) {
+            callback(err);
+        });
+    };
+
+    container.click(function() {
+        if( scope.analyser.paused ) {
+            console.log("play");
+            scope.analyser.play();
+        } else {
+            console.log("pause");
+            scope.analyser.pause();
+        }
+    });
+
+    container.mousemove(function() {
+        var factorx = event.pageX / $(window).width();
+        var factory = event.pageY / $(window).height();
+
+        if(scope.analyser.paused) {
+            scope.kaleidoscope.angleTarget = factorx;
+            scope.kaleidoscope.zoomTarget  = 1.0 + 0.5 * factory;
+        }
+    });
+
+
+    new DragDrop(container[0], function(files) {
+        if(files.length <= 0) return;
+
+        var formData = new FormData();
+        formData.append('file', files[0]);
+
+        createNewScope(function(err) {
+            jQuery.ajax('/files', {
+                type : "POST",
+                processData: false,
+                contentType: false,
+                data: formData
+            }).done(function(data) {
+                var imageSrc = "files/" + data.id;
+
+                var type = files[0].type.substring(0, 5);
+                
+                if(type === "audio") {
+                    console.log("Set audio");
+
+                    $.post('scopes/' + model._id, {
+                       'music' : data.id 
+                    }).done(function() {
+                        scope.setAudio("files/" + data.id);
+                    });
+                }
+
+                if(type === "image") {
+                    console.log("Set image");
+                    
+                    $.post('scopes/' + model._id, {
+                       'image' : data.id 
+                    }).done(function() {
+                        scope.setImage("files/" + data.id);
+                    });
+                }
+
+          
+            });
+
+        }); 
+    });
+    
+    page('/:id?', function(req) {
+        var id = req.params['id'] || "default";
+
+        $.get("/scopes/" + id)
+        .done(function(data) {
+            model = data;
+
+            console.log(model);
+
+            scope.setImage("files/" + model.image);
+            scope.setAudio("files/" + model.music);
+        })
+        .fail(function() {
+            page("/");
+        });
+    });
+    page();
+
+
+    var container = $("#container");
+    
     var resizeHandler = function() {
         container.height( $(window).height() );
         container.width( $(window).width() );
     };
 
     $(window).resize(resizeHandler);
-    $(window).resize();
-
-    setInterval(function() {
-        kaleidoscope.draw();
-    }, 1000 / 30);
-
-    function DragDrop(context, callback) {
-        var disable = function(event) {
-            event.stopPropagation();
-            event.preventDefault();
-        };
-
-        var onDrop = function(event) {
-            disable(event);
-            callback(event.dataTransfer.files);
-        };
-
-        context.addEventListener("dragleave", disable);
-        context.addEventListener("dragenter", disable);
-        context.addEventListener("dragover", disable);
-        context.addEventListener("drop",  onDrop, false);
-    };
-
-    DragDrop(container[0], function(files) {
-        if(files.length <= 0) return;
-
-        var formData = new FormData();
-        formData.append('file', files[0]);
-        
-
-        jQuery.ajax('/files', {
-            type : "POST",
-            processData: false,
-            contentType: false,
-            data: formData
-        }).done(function(data) {
-            var imageSrc = "files/" + data.id;
-
-            changeResources(imageSrc);
-
-            $.post('scopes/' + window.currentId, {
-               'image' : data.id 
-            }).done(function() {
-
-            });
-        });
-    });
-
-    var app = Davis(function () {
-        this.configure(function () {
-            this.generateRequestOnPageLoad = true;
-        });
-
-        this.get('/:id?', function (req) {
-            var id = req.params['id'] || "default";
-            window.currentId = id;
-
-            $.get("/scopes/" + id, function(data) {
-                changeResources("files/" + data.image);
-            });
-        })
-    });
-
-    app.start(); 
+    $(window).resize();    
 });
 
-function changeResources(imageSrc) {
-    var image = new Image();
-    image.src = imageSrc;
-    image.onload = function() {
-        kaleidoscope.image = image;
-    };
-}
 

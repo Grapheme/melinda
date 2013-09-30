@@ -1,7 +1,23 @@
-cradle = require "cradle"
-_      = require "underscore"
+cradle  = require "cradle"
+_       = require "underscore"
+hashids = require "hashids"
 
 scopes = new(cradle.Connection)().database "scopes"
+
+# Функция генерирует произвольный короткий адрес вида "pgVQVn"
+# Выполняется наивная и глупая проверка на уникальность
+generateId = (callback) ->
+    hasher = new hashids "salt"
+    num = _.random(0, 0xffffffff)
+    id = hasher.encrypt(num)
+
+    # Пытаемся выяснить, есть ли конфликт
+    scopes.get id, (err, doc) ->
+        if err
+            return callback id
+
+        generateId callback
+
 
 exports.create = (req, res, next) ->
     createdDoc = _(req.body).chain()
@@ -11,11 +27,12 @@ exports.create = (req, res, next) ->
             image : "default_image"
         .value()
 
-    scopes.save createdDoc, (err, doc) ->
-        if err 
-            return next new Error "Error saving document #{err.error}"
-            
-        res.json _(doc).pick([ "music", "image", "_id"])
+    generateId (id) ->
+        scopes.save id, createdDoc, (err, doc) ->
+            if err 
+                return next new Error "Error saving document #{err.error}"
+                
+            res.json _(doc).pick([ "music", "image", "_id"])
 
 exports.update = (req, res, next) ->
     id = req.params.id
