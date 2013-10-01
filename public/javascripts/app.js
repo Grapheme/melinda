@@ -2,7 +2,7 @@
 $(function() {
     container = $('#container');
 
-    window.scope = new Graphemescope( document.getElementById("container") );
+    window.scope = new Graphemescope( container[0] );
     window.model = {};
 
     var createNewScope = function(callback) {

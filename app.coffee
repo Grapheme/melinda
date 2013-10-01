@@ -8,7 +8,7 @@ cradle      = require "cradle"
 app = express()
 
 # Настройки
-app.set "port", process.env.PORT || 3000
+app.set "port", process.env.PORT || 8080
 app.set "public", path.join __dirname, "public"
 
 # Настройка движка шаблонизатора

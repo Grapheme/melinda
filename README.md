@@ -1,19 +1,15 @@
 ## Melinda 
-Melinda — is a web application that allows to create your own dynamic kaleidoscopic visualizations.
+Melinda — веб-приложение, позволяющее создавать свои собственные калейдоскопические 
+визуализации.
 
-### Dependencies
-Melinda uses:
-	
-* Graphemescope library as a tool to draw kaleidoscopes
-* CoffeeScript as a server-side language
-* JavaScript as a client-side language
-* Express web framework as a server-side routing solution
-* Davis.js as a client-side pushState routing solution
-* CouchDB as a database 
+### Зависимости
+Melinda использует:
+* Библиотеку [Graphemescope](https://github.com/Grapheme/graphemescope) для рисования калейдоскопов
+* CoffeScript, Express — на стороне сервера
+* CouchDB для хранения данных
 
-### Run instructions
+### Запуск
 ```
-cd melinda/
 npm install -g coffee-script
 npm install
 npm start
