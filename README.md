@@ -12,7 +12,6 @@ Melinda uses:
 * CouchDB as a database 
 
 ### Run instructions
-
 ```
 cd melinda/
 npm install -g coffee-script

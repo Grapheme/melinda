@@ -8,6 +8,7 @@ moment  = require "moment"
 
 db = new(cradle.Connection)().database "files"
 
+# Функция вычисляет md5 хеш от файла
 hashFile = (path, callback) ->
 	file = fs.createReadStream path
 	hash = crypto.createHash "md5"
@@ -86,10 +87,16 @@ module.exports.get = (req, res, next) ->
 		if err
 			return next new Error "Error getting file #{err.error}"
 
+		# Обновляем время последнего доступа к файлу
+		mergeFields = 
+			accessed : moment().unix()
+
+		db.merge id, mergeFields, (err, doc) ->
+
+		# Отдаем файл поточно
 		attachmentName = _(doc._attachments).keys()[0]
-
 		readStream = db.getAttachment id, attachmentName, (err) ->
-
+		
 		res.set "Content-Type", doc.mime
 		readStream.pipe res
 
