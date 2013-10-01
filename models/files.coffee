@@ -3,8 +3,24 @@ cradle  = require "cradle"
 path    = require "path"
 fs 		= require "fs"
 _ 		= require "underscore"
+crypto  = require "crypto"
+moment  = require "moment"
 
 db = new(cradle.Connection)().database "files"
+
+hashFile = (path, callback) ->
+	file = fs.createReadStream path
+	hash = crypto.createHash "md5"
+
+	file.on "data", (data) ->
+		hash.update data
+
+	file.once "end", ->
+		callback null, hash.digest "hex"
+
+	file.once "error", (err) ->
+		callback err
+
 
 
 # Обработчик загрузки файлов
@@ -26,30 +42,40 @@ module.exports.upload = (req, res, next) ->
 	file = files[0]
 
 	mimeType = file.headers['content-type']
-			
-	# Сохраняем документ, соответствующий файлу
-	db.save 
-		mime : mimeType
-	, (err, result) ->
+
+	hashFile file.path, (err, hash) ->
 		if err 
 			do cleanup
-			return next new Error "Error saving document #{err.error}"
+			return next new Error "Error hashing file!"
 
-		attachmentData = 
-			name: file.originalFilename
-			"Content-Type" : file.headers['content-type']
-
-		# Сохраняем тело файла в базу, используя streaming
-		writeStream = db.saveAttachment result.id, attachmentData, (err, result) ->
-			if err
+		timestamp = moment().unix()
+			
+		# Сохраняем документ, соответствующий файлу
+		db.save hash,
+			mime 	 : mimeType
+			created  : timestamp
+			accessed : timestamp 
+		, (err, result) ->
+			if err 
 				do cleanup
-				return next(err.error)
+				return res.json 
+					_id : hash
 
-			res.json
-				_id : result.id
+			attachmentData = 
+				name: file.originalFilename
+				"Content-Type" : file.headers['content-type']
 
-		readStream = fs.createReadStream file.path
-		readStream.pipe writeStream
+			# Сохраняем тело файла в базу, используя streaming
+			writeStream = db.saveAttachment result.id, attachmentData, (err, att) ->
+				if err
+					do cleanup
+					return next(err.error)
+
+				return res.json 
+					_id : hash
+
+			readStream = fs.createReadStream file.path
+			readStream.pipe writeStream
 
 
 # Обработчик получения файла по его id
