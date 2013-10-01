@@ -1,5 +1,5 @@
 // Делает контейнер калейдоскопа на всю страницу
-$(function() {
+$(window).on("load", function() {
     container = $('#container');
 
     window.scope = new Graphemescope( container[0] );
@@ -22,10 +22,16 @@ $(function() {
     };
 
     container.click(function() {
+
         if( scope.analyser.paused ) {
-            console.log("play");
+            $("#play-image").show(0);
+            $("#play-image").addClass("moved");
+
             scope.analyser.play();
         } else {
+            $("#pause-image").show(0);
+            $("#pause-image").addClass("moved");
+            
             console.log("pause");
             scope.analyser.pause();
         }
@@ -105,10 +111,22 @@ $(function() {
     var resizeHandler = function() {
         container.height( $(window).height() );
         container.width( $(window).width() );
+
+        $(".centered-image").each(function() {
+            $(this).css({
+                "top" : 0.5 * ($(window).height() - $(this).height()),
+                "left" :0.5 * ($(window).width() -  $(this).width())
+            });
+        });
     };
 
     $(window).resize(resizeHandler);
-    $(window).resize();    
+    $(window).resize();   
+
+    $(".status-icon").on("transitionend", function() {
+        $(this).removeClass("moved");
+        $(this).hide();
+    });
 });
 
 

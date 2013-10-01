@@ -16,3 +16,21 @@ body, html {
 	z-index: 2;
 	color : white;
 }
+
+.centered-image {
+  position : absolute;
+  z-index  : 3;
+}
+
+.status-icon {
+  display : none;
+}
+
+.status-icon.moved {
+  transition-duration : 0.5s;
+  transition-timing-function: ease;
+  -webkit-transform: scale(1.5);
+  opacity: 0.0;
+}
+
+
