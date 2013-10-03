@@ -26,6 +26,30 @@ $(window).on("load", function() {
     }); 
 
 
+    function updateURL() {
+        var url = window.location.host;
+
+        if(window.location.pathname !== "/") {
+            url += window.location.pathname;
+        }
+
+        $("#scope-address").val(url);
+       
+        $("#facebook-button").attr({
+            "href" : "http://www.facebook.com/sharer/sharer.php?s=100&p[url]=" + location.href + "&p[title]=Check this out!"
+        });
+
+        $("#twitter-button").attr({
+            "href" : "http://twitter.com/share?url=" + location.href + "&text=Check this out!"
+        });
+
+        $("#vk-button").attr({
+            "href" : "http://vk.com/share.php?url=" + location.href + "&title=Check this out!"
+        });
+        
+    }
+
+
 
     var kaleidoscopeLayer = $('#kaleidoscope-layer');
     var dragdropLayer = $("#dragdrop-layer");
@@ -41,7 +65,7 @@ $(window).on("load", function() {
         })
         .done(function(data) {
             page.show("/" + model._id, {}, false);
-            $("#scope-address").val(location.href);
+            updateURL();
             callback();
         })
         .fail(function(err) {
@@ -118,7 +142,7 @@ $(window).on("load", function() {
 
 
     page("/*", function(req, next) {
-        $("#scope-address").val(location.href);
+        updateURL();
         next();
     });
     
@@ -157,7 +181,7 @@ $(window).on("load", function() {
     $(window).resize(resizeHandler);
     $(window).resize();   
 
-
+    // TODO: avoid this
     $(".status-icon").on("transitionend", function() {
         $(this).removeClass("fadeout");
         $(this).hide();

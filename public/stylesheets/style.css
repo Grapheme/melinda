@@ -78,6 +78,11 @@ audio {
   font-weight: 500;
 }
 
+.social-button {
+  text-decoration: none;
+  color : inherit;
+}
+
 /* ----------------------------------------------------
   How to layer styles
  ------------------------------------------------------ */
