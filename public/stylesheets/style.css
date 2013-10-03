@@ -4,10 +4,9 @@ body, html {
   margin : 0;
   overflow: hidden;
   color : white;
-  font-family: "futura";
-  font-weight: 600;
-
+  font-family: "futura-pt", sans-serif;
 }
+
 
 audio {
   display : none;
@@ -22,13 +21,13 @@ audio {
 }
 
 .stroked {
-  border-color: white;
+/*  border-color: white;
   border-width: 2px;
   border-radius: 15px;
   border-style: dashed;
   margin: 10px;
 
-  height : 100%;
+  height : 100%;*/
 }
 
 #main-containter { }
@@ -53,7 +52,7 @@ audio {
 
 #howto-layer {
   z-index: 5;
-  display: none;
+  text-align: center;
   background-color: rgba(0,0,0,0.8);
 }
 
