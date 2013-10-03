@@ -155,10 +155,8 @@ audio {
   z-index : 1;
 }
 
-
 .centered-image {
   position : absolute;
-  z-index  : 3;
 }
 
 .fullscreen {

@@ -36,11 +36,10 @@ $(window).on("load", function() {
     var createNewScope = function(callback) {
         $.ajax({
             type : "PUT",
-            data : model,
+            data : window.model,
             url  : "/scopes"
         })
         .done(function(data) {
-            model = data;
             page.show("/" + model._id, {}, false);
             $("#scope-address").val(location.href);
             callback();
@@ -60,8 +59,7 @@ $(window).on("load", function() {
         } else {
             $("#pause-image").show(0);
             $("#pause-image").addClass("fadeout");
-            
-            console.log("pause");
+
             scope.analyser.pause();
         }
     });
@@ -129,9 +127,7 @@ $(window).on("load", function() {
 
         $.get("/scopes/" + id)
         .done(function(data) {
-            model = data;
-
-            console.log(model);
+            window.model = data;
 
             scope.setImage("files/" + model.image);
             scope.setAudio("files/" + model.audio);
