@@ -63,10 +63,23 @@ audio {
   How to layer styles
  ------------------------------------------------------ */
 #howto-layer {
-  display:  none;
-  z-index: 5;
-  text-align: center;
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(0,0,0,0.5);
+  z-index     : 5;
+  display     : none;
+  text-align  : center;
+  padding     : 3em 0;
+}
+
+#howto-layer p {
+  max-width : 50em;
+  margin    : 0 auto;
+  padding   : 0 2em;
+}
+
+#howto-layer .share-image { 
+  position    : absolute;
+  margin-left : -23px;
+  bottom      : 140px;
 }
 
 /* ----------------------------------------------------
