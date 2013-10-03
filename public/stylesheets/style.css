@@ -5,6 +5,7 @@ body, html {
   overflow        : hidden;
   color           : white;
   font-family     : "futura-pt", sans-serif;
+  font-weight     : 300; 
 }
 
 audio {
@@ -19,9 +20,9 @@ audio {
 #bar-layer {
   z-index     : 6;
   position    : fixed;
-  bottom      : -35px;
-  height      :  35px;
-  line-height :  35px;
+  bottom      : -45px;
+  height      :  45px;
+  line-height :  45px;
   width       :  100%;
   clear       :  both;
 
@@ -36,8 +37,8 @@ audio {
 }
 
 /* Bar columns */
-.bar-right  { float : right; }
-.bar-left   { float : left; }
+.bar-right  { float : right;      margin: 0 10px; padding : auto auto; }
+.bar-left   { float : left;       margin: 0 5px; }
 .bar-center { text-align: center; margin: 0 auto; }
 
 /* Icon button with thin circle border */
@@ -55,8 +56,16 @@ audio {
 }
 
 #scope-address {
+  display       : inline-block;
   background-color  : rgba(100, 100, 100, 0.3);
-  font-weight: 500;
+  color        : inherit;
+  font         : inherit;
+  border       : transparent;
+  line-height  : 25px;
+  height       : 25px;
+  text-align   : left;
+  width        : 300px;
+  font-weight  : 400; 
 }
 
 /* ----------------------------------------------------
@@ -67,7 +76,6 @@ audio {
   z-index     : 5;
   display     : none;
   text-align  : center;
-  padding     : 3em 0;
 }
 
 #howto-layer p {
@@ -79,7 +87,17 @@ audio {
 #howto-layer .share-image { 
   position    : absolute;
   margin-left : -23px;
-  bottom      : 140px;
+  bottom      : 50px;
+}
+
+#howto-layer  .stroked {
+  border-color  : white;
+  border-width  : 2px;
+  border-radius : 15px;
+  border-style  : dashed;
+  margin        : 10px;
+  padding       : 3em 0;
+  height        : 100%;
 }
 
 /* ----------------------------------------------------
@@ -149,14 +167,6 @@ audio {
   height    : 100%;
 }
 
-.stroked {
-/*  border-color: white;
-  border-width: 2px;
-  border-radius: 15px;
-  border-style: dashed;
-  margin: 10px;
 
-  height : 100%;*/
-}
 
 

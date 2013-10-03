@@ -42,6 +42,7 @@ $(window).on("load", function() {
         .done(function(data) {
             model = data;
             page.show("/" + model._id, {}, false);
+            $("#scope-address").val(location.href);
             callback();
         })
         .fail(function(err) {
@@ -115,6 +116,12 @@ $(window).on("load", function() {
                 }
             });
         }); 
+    });
+
+
+    page("/*", function(req, next) {
+        $("#scope-address").val(location.href);
+        next();
     });
     
     page('/:id?', function(req) {
