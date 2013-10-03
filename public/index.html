@@ -28,28 +28,39 @@
     <div id="main-container">
 
         <!-- Status bar in the bottom -->
-        <div class="shown" id="bar-layer">
-            <span class="social-icon">
-                <i class="icon-question"></i>
-            </span>
+        <div id="bar-layer">
+            <div class="bar-left">
+                <!-- This button will show how-to-use intruction layer -->
+                <span class="circle-icon" id="howto-button">
+                    <i class="icon-question"></i>
+                </span>
+            </div>
 
-            <span>
-                http://melinda.com/
-            </span>
+            <div class="bar-right">
+                <a href="http://grapheme.ru">
+                    <img src="images/graphemelab-logo.png" />
+                </a>
+            </div>
 
-            <span class="social-icon">
-                <i class="icon-facebook"></i>
-            </span>
+            <div class="bar-center">
+                Link to this Scope: 
+                <span id="scope-address">
+                    http://melinda.com/
+                </span>
 
-            <span class="social-icon">
-                <i class="icon-twitter"></i>
-            </span>
+                <span class="circle-icon" id="facebook-button">
+                    <i class="icon-facebook"></i>
+                </span>
 
-            <span class="social-icon">
-                <i class="icon-vk"></i>
-            </span>
+                <span class="circle-icon" id="twitter-button">
+                    <i class="icon-twitter"></i>
+                </span>
 
-            <img src="images/graphemelab-logo.png" />
+                <span class="circle-icon" id="vk-button">
+                    <i class="icon-vk"></i>
+                </span>
+            </div>
+
         </div>
 
         <!-- Overlay with help instructions -->
@@ -85,12 +96,5 @@
 
     <!-- Typekit Initialization -->
     <script type="text/javascript" src="//use.typekit.net/lfo7hwh.js"></script>
-    
-    <!-- <script type="text/javascript">
-        try{
-            Typekit.load();
-        }
-        catch(e){}
-    </script>  --> 
   </body>
 </html>

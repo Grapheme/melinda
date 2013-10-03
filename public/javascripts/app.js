@@ -1,5 +1,6 @@
 // Делает контейнер калейдоскопа на всю страницу
 $(window).on("load", function() {
+    Typekit.load();
 
     setTimeout(function() {
         $("#melinda-logo").addClass("fadein");
@@ -7,9 +8,22 @@ $(window).on("load", function() {
         setTimeout(function() {
             $("#melinda-logo").addClass("fadeout");
             $("#bar-layer").addClass("shown");
-        }, 4000);
+        }, 2000);
     }, 500);   
 
+    $("#howto-button").click(function() {
+        $("#howto-layer").show(0);
+        $("#kaleidoscope-layer").css({
+            "-webkit-filter" : "blur(20px)"
+        });
+    });
+
+    $("#howto-layer").click(function() {
+        $("#howto-layer").hide();
+           $("#kaleidoscope-layer").css({
+            "-webkit-filter" : ""
+        });
+    }); 
 
 
 
@@ -125,8 +139,6 @@ $(window).on("load", function() {
 
 
     var mainContainer = $("#main-container");
-
-    
     var resizeHandler = function() {
         mainContainer.height( $(window).height() );
         mainContainer.width( $(window).width() );
