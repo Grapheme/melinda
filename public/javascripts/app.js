@@ -1,5 +1,18 @@
 // Делает контейнер калейдоскопа на всю страницу
 $(window).on("load", function() {
+
+    setTimeout(function() {
+        $("#melinda-logo").addClass("fadein");
+        
+        setTimeout(function() {
+            $("#melinda-logo").addClass("fadeout");
+            $("#bar-layer").addClass("shown");
+        }, 4000);
+    }, 500);   
+
+
+
+
     var kaleidoscopeLayer = $('#kaleidoscope-layer');
     var dragdropLayer = $("#dragdrop-layer");
 
@@ -128,6 +141,7 @@ $(window).on("load", function() {
 
     $(window).resize(resizeHandler);
     $(window).resize();   
+
 
     $(".status-icon").on("transitionend", function() {
         $(this).removeClass("fadeout");

@@ -6,12 +6,16 @@
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="stylesheets/style.css" />
+
+    <!-- Iconic Font Awesome -->
+    <link rel="stylesheet" href="stylesheets/font-awesome/css/font-awesome.min.css" />
     
     <!-- 3rd-party libraries -->
     <script src="javascripts/vendor/jquery.js"></script>
     <script src="javascripts/vendor/page.js"></script>
     <script src="javascripts/vendor/underscore.js"></script>
     <script src="javascripts/vendor/prefixfree.min.js"></script>
+
   </head>
 
   <body>  
@@ -22,23 +26,45 @@
 
     <!-- Application Layout -->
     <div id="main-container">
-        <div id="bar-layer">
-            <!--
-            <img src="images/twitter-icon.png" />
-            <img src="images/facebook-icon.png" />
-            <img src="images/vk-icon.png" />
-            -->
+
+        <!-- Status bar in the bottom -->
+        <div class="shown" id="bar-layer">
+            <span class="social-icon">
+                <i class="icon-question"></i>
+            </span>
+
+            <span>
+                http://melinda.com/
+            </span>
+
+            <span class="social-icon">
+                <i class="icon-facebook"></i>
+            </span>
+
+            <span class="social-icon">
+                <i class="icon-twitter"></i>
+            </span>
+
+            <span class="social-icon">
+                <i class="icon-vk"></i>
+            </span>
 
             <img src="images/graphemelab-logo.png" />
         </div>
 
+        <!-- Overlay with help instructions -->
         <div class="fullscreen" id="howto-layer">
+            <div class="stroked"> 
+            </div>
         </div>
 
         <div class="fullscreen" id="dragdrop-layer"></div>
 
+        <div class="fullscreen" id="logo-layer">
+            <img src="images/melinda-logo.png" id="melinda-logo" class="centered-image" />
+        </div>
+
         <div class="fullscreen" id="icons-layer">
-            <img src="images/melinda-logo.png" class="centered-image" />
             <img src="images/play.png"  class="status-icon centered-image" id="play-image" />
             <img src="images/pause.png" class="status-icon centered-image" id="pause-image" />
         </div>
@@ -46,5 +72,13 @@
         <div class="fullscreen" id="kaleidoscope-layer"></div>
     </div>
 
+    <!-- Typekit Initialization -->
+    <script type="text/javascript" src="//use.typekit.net/lfo7hwh.js"></script>
+    <script type="text/javascript">
+        try{
+            Typekit.load();
+        }
+        catch(e){}
+    </script>   
   </body>
 </html>

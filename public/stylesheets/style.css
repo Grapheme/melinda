@@ -4,7 +4,16 @@ body, html {
   margin : 0;
   overflow: hidden;
   color : white;
+  font-family: "futura";
+  font-weight: 600;
+
 }
+
+audio {
+  display : none;
+}
+
+
 
 .fullscreen {
   position : absolute;
@@ -12,22 +21,49 @@ body, html {
   height : 100%;
 }
 
-#bar-layer {
-  z-index:  5;
+.stroked {
+  border-color: white;
+  border-width: 2px;
+  border-radius: 15px;
+  border-style: dashed;
+  margin: 10px;
 
-  position : absolute;
-  height: 30px;
+  height : 100%;
+}
+
+#main-containter { }
+
+#bar-layer {
+  z-index:  6;
+
+  position: fixed;
+  bottom : -35px;
+  height: 35px;
+  line-height: 35px;
   background-color: rgba(0,0,0,0.8);
   width : 100%;
+
+  transition-duration        : 0.5s;
+  transition-timing-function : ease;
+}
+
+#bar-layer.shown {
+  bottom : 0px; 
 }
 
 #howto-layer {
+  z-index: 5;
   display: none;
-  z-index: 4;
+  background-color: rgba(0,0,0,0.8);
 }
 
 #dragdrop-layer {
-  z-index: 3;
+  z-index: 4;
+}
+
+
+#logo-layer {
+  z-index : 3;
 }
 
 #icons-layer {
@@ -38,21 +74,46 @@ body, html {
   z-index : 1;
 }
 
+#melinda-logo {
+  opacity: 0.0;
+}
+
+#melinda-logo.fadein {
+  transition-duration        : 1s;
+  transition-timing-function : ease;
+  opacity                    : 1.0;
+}
+
+#melinda-logo.fadeout {
+  transition-duration        : 1s;
+  transition-timing-function : ease;
+  opacity                    : 0.0;
+}
 
 .centered-image {
   position : absolute;
   z-index  : 3;
 }
 
-
 .status-icon {
   display : none;
+}
+
+.social-icon {
+  border-radius : 666px;
+  border-style: solid;
+  border-width : 1px;
+  display: inline-block;
+  height : 25px;
+  width :25px;
+  line-height: 25px;
+  text-align: center;
 }
 
 .status-icon.fadeout {
   transition-duration        : 0.5s;
   transition-timing-function : ease-out;
-  transform                  : scale(1.5);
+  transform                  : scale(2);
   opacity                    : 0.0;
 }
 
