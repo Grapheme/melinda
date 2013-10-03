@@ -5,7 +5,7 @@ Melinda — веб-приложение, позволяющее создават
 ### Зависимости
 Melinda использует:
 * Библиотеку [Graphemescope](https://github.com/Grapheme/graphemescope) для рисования калейдоскопов
-* CoffeScript, Express — на стороне сервера
+* CoffeeScript, Express — на стороне сервера
 * CouchDB для хранения данных
 
 ### Запуск

@@ -1,8 +1,9 @@
 // Делает контейнер калейдоскопа на всю страницу
 $(window).on("load", function() {
-    container = $('#container');
+    var kaleidoscopeLayer = $('#kaleidoscope-layer');
+    var dragdropLayer = $("#dragdrop-layer");
 
-    window.scope = new Graphemescope( container[0] );
+    window.scope = new Graphemescope( kaleidoscopeLayer[0] );
     window.model = {};
 
     var createNewScope = function(callback) {
@@ -21,23 +22,23 @@ $(window).on("load", function() {
         });
     };
 
-    container.click(function() {
+    dragdropLayer.click(function() {
 
         if( scope.analyser.paused ) {
             $("#play-image").show(0);
-            $("#play-image").addClass("moved");
+            $("#play-image").addClass("fadeout");
 
             scope.analyser.play();
         } else {
             $("#pause-image").show(0);
-            $("#pause-image").addClass("moved");
+            $("#pause-image").addClass("fadeout");
             
             console.log("pause");
             scope.analyser.pause();
         }
     });
 
-    container.mousemove(function() {
+    dragdropLayer.mousemove(function() {
         var factorx = event.pageX / $(window).width();
         var factory = event.pageY / $(window).height();
 
@@ -48,7 +49,7 @@ $(window).on("load", function() {
     });
 
 
-    new DragDrop(container[0], function(files) {
+    new DragDrop(dragdropLayer[0], function(files) {
         if(files.length <= 0) return;
 
         var formData = new FormData();
@@ -60,7 +61,8 @@ $(window).on("load", function() {
                 processData: false,
                 contentType: false,
                 data: formData
-            }).done(function(data) {
+            })
+            .done(function(data) {
                 var imageSrc = "files/" + data._id;
 
                 var type = files[0].type.substring(0, 5);
@@ -106,16 +108,20 @@ $(window).on("load", function() {
     });
     page();
 
-    var container = $("#container");
+
+
+
+    var mainContainer = $("#main-container");
+
     
     var resizeHandler = function() {
-        container.height( $(window).height() );
-        container.width( $(window).width() );
+        mainContainer.height( $(window).height() );
+        mainContainer.width( $(window).width() );
 
         $(".centered-image").each(function() {
             $(this).css({
-                "top" : 0.5 * ($(window).height() - $(this).height()),
-                "left" :0.5 * ($(window).width() -  $(this).width())
+                "top"  : 0.5 * ($(window).height() - $(this).height()),
+                "left" : 0.5 * ($(window).width() -  $(this).width())
             });
         });
     };
@@ -124,7 +130,7 @@ $(window).on("load", function() {
     $(window).resize();   
 
     $(".status-icon").on("transitionend", function() {
-        $(this).removeClass("moved");
+        $(this).removeClass("fadeout");
         $(this).hide();
     });
 });

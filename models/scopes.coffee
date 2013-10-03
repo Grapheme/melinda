@@ -1,6 +1,7 @@
 cradle  = require "cradle"
 _       = require "underscore"
 hashids = require "hashids"
+moment  = require "moment"
 
 scopes = new(cradle.Connection)().database "scopes"
 
@@ -23,8 +24,8 @@ exports.create = (req, res, next) ->
     createdDoc = _(req.body).chain()
         .pick(["audio", "image"])
         .defaults
-            audio : "default_audio"
-            image : "default_image"
+            audio : "defaultaudio"
+            image : "defaultimage"
         .value()
 
     generateId (id) ->
@@ -52,6 +53,13 @@ exports.read = (req, res, next) ->
     scopes.get id, (err, doc) ->
         if err 
             return next new Error "Error getting document #{err.error}"
+
+        # Обновляем статистику
+        mergeFields = 
+            accessed : moment().unix()
+            hits     : 1 + doc.hits?
+
+        scopes.merge id, mergeFields, (err, doc) ->
 
         res.json _(doc).pick([ "audio", "image", "_id" ])
 

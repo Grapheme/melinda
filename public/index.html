@@ -7,19 +7,44 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="stylesheets/style.css" />
     
+    <!-- 3rd-party libraries -->
     <script src="javascripts/vendor/jquery.js"></script>
     <script src="javascripts/vendor/page.js"></script>
     <script src="javascripts/vendor/underscore.js"></script>
+    <script src="javascripts/vendor/prefixfree.min.js"></script>
   </head>
 
   <body>  
-    <!-- Main application script -->
+    <!-- Main application scripts -->
     <script src="javascripts/graphemescope.js"></script>
     <script src="javascripts/app.js"></script>
 
-    <img src="images/play.png"  class="status-icon centered-image" id="play-image" />
-    <img src="images/pause.png" class="status-icon centered-image" id="pause-image" />
 
-    <div id="container"></div>
+    <!-- Application Layout -->
+    <div id="main-container">
+        <div id="bar-layer">
+            <!--
+            <img src="images/twitter-icon.png" />
+            <img src="images/facebook-icon.png" />
+            <img src="images/vk-icon.png" />
+            -->
+
+            <img src="images/graphemelab-logo.png" />
+        </div>
+
+        <div class="fullscreen" id="howto-layer">
+        </div>
+
+        <div class="fullscreen" id="dragdrop-layer"></div>
+
+        <div class="fullscreen" id="icons-layer">
+            <img src="images/melinda-logo.png" class="centered-image" />
+            <img src="images/play.png"  class="status-icon centered-image" id="play-image" />
+            <img src="images/pause.png" class="status-icon centered-image" id="pause-image" />
+        </div>
+
+        <div class="fullscreen" id="kaleidoscope-layer"></div>
+    </div>
+
   </body>
 </html>

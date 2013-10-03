@@ -33,7 +33,6 @@ putFile = (db, filePath, mime, name, callback) ->
 	db.save name,
 		mime     : mime
 		created  : timestamp 
-		accessed : timestamp
 	, (err, result) ->
 
 		attachmentData = 

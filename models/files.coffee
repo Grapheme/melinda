@@ -23,7 +23,6 @@ hashFile = (path, callback) ->
 		callback err
 
 
-
 # Обработчик загрузки файлов
 module.exports.upload = (req, res, next) ->
 
@@ -55,7 +54,6 @@ module.exports.upload = (req, res, next) ->
 		db.save hash,
 			mime 	 : mimeType
 			created  : timestamp
-			accessed : timestamp 
 		, (err, result) ->
 			if err 
 				do cleanup
@@ -90,6 +88,7 @@ module.exports.get = (req, res, next) ->
 		# Обновляем время последнего доступа к файлу
 		mergeFields = 
 			accessed : moment().unix()
+			hits 	 : 1 + doc.hits?
 
 		db.merge id, mergeFields, (err, doc) ->
 
