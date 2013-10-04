@@ -64,6 +64,7 @@ $(window).on("load", function() {
             url  : "/scopes"
         })
         .done(function(data) {
+            model = data;
             page.show("/" + model._id, {}, false);
             updateURL();
             callback();
@@ -123,6 +124,8 @@ $(window).on("load", function() {
                     $.post('scopes/' + model._id, {
                        'audio' : data._id 
                     }).done(function() {
+
+                        model.audio = data._id;
                         scope.setAudio("files/" + data._id);
                     });
                 }
@@ -133,6 +136,8 @@ $(window).on("load", function() {
                     $.post('scopes/' + model._id, {
                        'image' : data._id 
                     }).done(function() {
+
+                        model.image = data._id;
                         scope.setImage("files/" + data._id);
                     });
                 }
