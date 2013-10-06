@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "coffee app.coffee",
-    "scaffold" : "coffee db/scaffold.coffee"
+    "start" : "forever start -c coffee app.coffee",
+    "stop"  : "forever stop -c coffee app.coffee",
+    "scaffold": "coffee db/scaffold.coffee"
   },
   "dependencies": {
     "express": "3.4.0",
@@ -14,5 +15,9 @@
     "swig": "~1.0.0",
     "hashids": "~0.3.1",
     "moment": "~2.2.1"
+  },
+  "devDependencies": {
+    "coffee-script": "~1.6.3",
+    "forever": "~0.10.8"
   }
 }
