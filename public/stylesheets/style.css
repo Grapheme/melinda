@@ -2,6 +2,7 @@ body, html {
   background-color: black;
   padding         : 0;
   margin          : 0;
+  height          : 100%;
   overflow        : hidden;
   color           : white;
   font-family     : "futura-pt", sans-serif;
@@ -87,10 +88,22 @@ audio {
   How to layer styles
  ------------------------------------------------------ */
 #howto-layer {
+  display: none;
+  z-index   : 5;
+  position  : absolute;
+  height    : auto;
+  bottom:0; top:0; left:0; right:0;
+  margin : 0;
+
+  text-align:  center;
   background-color: rgba(0,0,0,0.5);
-  z-index     : 5;
-  display     : none;
-  text-align  : center;
+}
+
+#howto-layer .instructions-image {
+  /* See: http://stackoverflow.com/a/3463951 */
+  width: auto !important; /* override the width below */
+  width: 100%;
+  max-width: 100%;
 }
 
 #howto-layer p {
@@ -100,19 +113,29 @@ audio {
 }
 
 #howto-layer .share-image { 
-  position    : absolute;
+  position    : fixed;
   margin-left : -23px;
-  bottom      : 50px;
+  bottom      : 65px;
 }
 
-#howto-layer  .stroked {
+#howto-layer .bounding-box {
+  position : absolute;
+  height : auto;
+  bottom: 0; top: 0; left: 0; right: 0;
+
+  margin-top    : 10px;
+  margin-bottom : 55px;
+  margin-right  : 10px;
+  margin-left   : 10px;
+
+  /* Stroked border */
   border-color  : white;
   border-width  : 2px;
   border-radius : 15px;
   border-style  : dashed;
-  margin        : 10px;
   padding       : 3em 0;
-  height        : 100%;
+
+  overflow : hidden;
 }
 
 /* ----------------------------------------------------

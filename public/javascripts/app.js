@@ -14,7 +14,7 @@ $(window).on("load", function() {
     $("#howto-button").click(function() {
         $("#howto-layer").show(0);
         $("#kaleidoscope-layer").css({
-            "-webkit-filter" : "blur(20px)"
+            "-webkit-filter" : "blur(5px)"
         });
     });
 
@@ -76,7 +76,7 @@ $(window).on("load", function() {
 
     dragdropLayer.click(function() {
 
-        if( scope.analyser.paused ) {
+        if( scope.analyser.isPaused() ) {
             $("#play-image").show(0);
             $("#play-image").addClass("fadeout");
 
@@ -93,7 +93,7 @@ $(window).on("load", function() {
         var factorx = event.pageX / $(window).width();
         var factory = event.pageY / $(window).height();
 
-        if(scope.analyser.paused) {
+        if(scope.analyser.isPaused() ) {
             scope.kaleidoscope.angleTarget = factorx;
             scope.kaleidoscope.zoomTarget  = 1.0 + 0.5 * factory;
         }
@@ -172,9 +172,6 @@ $(window).on("load", function() {
 
     var mainContainer = $("#main-container");
     var resizeHandler = function() {
-        mainContainer.height( $(window).height() );
-        mainContainer.width( $(window).width() );
-
         $(".centered-image").each(function() {
             $(this).css({
                 "top"  : 0.5 * ($(window).height() - $(this).height()),
