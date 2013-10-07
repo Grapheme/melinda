@@ -26,13 +26,6 @@ $(window).on("load", function() {
     $("#howto-button").click(toggleHelp);
     $("#howto-layer").click(toggleHelp); 
 
-    
-    // TODO: avoid this
-    $(".status-icon").on("transitionend", function() {
-        $(this).removeClass("fadeout");
-        $(this).hide();
-    });
-
 
     function updateURL() {
         var url = window.location.host;
@@ -95,13 +88,19 @@ $(window).on("load", function() {
     dragdropLayer.click(function() {
 
         if( scope.analyser.isPaused() ) {
-            $("#play-image").show(0);
-            $("#play-image").addClass("fadeout");
+            $("#play-image").removeClass("hidden");
+
+            setTimeout(function() {
+                $("#play-image").addClass("hidden");
+            }, 0);
 
             scope.analyser.play();
         } else {
-            $("#pause-image").show(0);
-            $("#pause-image").addClass("fadeout");
+            $("#pause-image").removeClass("hidden");
+
+            setTimeout(function() {
+                $("#pause-image").addClass("hidden");
+            }, 0);
 
             scope.analyser.pause();
         }
