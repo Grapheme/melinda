@@ -1,7 +1,9 @@
-// Делает контейнер калейдоскопа на всю страницу
 $(window).on("load", function() {
     Typekit.load();
 
+    /* -------------------------------------------------------------------- */
+    // UI-related stuff goes below
+    /* -------------------------------------------------------------------- */
     setTimeout(function() {
         $("#melinda-logo").addClass("fadein");
         
@@ -11,19 +13,18 @@ $(window).on("load", function() {
         }, 2000);
     }, 500);   
 
-    $("#howto-button").click(function() {
-        $("#howto-layer").show(0);
-        $("#kaleidoscope-layer").css({
-            "-webkit-filter" : "blur(5px)"
-        });
-    });
-
-    $("#howto-layer").click(function() {
-        $("#howto-layer").hide();
-           $("#kaleidoscope-layer").css({
-            "-webkit-filter" : ""
-        });
-    }); 
+    function toggleHelp() {
+        if( !$("#howto-layer").is(":visible") ) {
+            $("#howto-layer").show(0);
+            $("#kaleidoscope-layer").css({ "-webkit-filter" : "blur(5px)" });
+        } else {
+            $("#howto-layer").hide();
+            $("#kaleidoscope-layer").css({ "-webkit-filter" : "none" });
+        }
+     
+    }
+    $("#howto-button").click(toggleHelp);
+    $("#howto-layer").click(toggleHelp); 
 
     
     // TODO: avoid this
@@ -67,8 +68,6 @@ $(window).on("load", function() {
         });
         
     }
-
-
 
     var kaleidoscopeLayer = $('#kaleidoscope-layer');
     var dragdropLayer = $("#dragdrop-layer");
@@ -119,7 +118,7 @@ $(window).on("load", function() {
     });
 
 
-    new DragDrop(dragdropLayer[0], function(files) {
+    function dropHandler(files) {
         if(files.length <= 0) return;
 
         var file = files[0];
@@ -132,24 +131,20 @@ $(window).on("load", function() {
                 var type = files[0].type.substring(0, 5);
                 
                 if(type === "audio") {
-                    console.log("Set audio");
 
                     $.post('scopes/' + model._id, {
                        'audio' : fileId 
                     }).done(function() {
-
                         model.audio = fileId;
                         scope.setAudio("files/" + fileId);
                     });
                 }
 
                 if(type === "image") {
-                    console.log("Set image");
-                    
+
                     $.post('scopes/' + model._id, {
                        'image' : fileId 
                     }).done(function() {
-
                         model.image = fileId;
                         scope.setImage("files/" + fileId);
                     });
@@ -157,9 +152,15 @@ $(window).on("load", function() {
             });
 
         });      
-    });
+    }
 
 
+    new DragDrop($("#dragdrop-layer")[0], dropHandler);
+    new DragDrop($("#howto-layer")[0], dropHandler);
+
+    /* -------------------------------------------------------------------- */
+    // Application pushState routing
+    /* -------------------------------------------------------------------- */
     page("/*", function(req, next) {
         updateURL();
         next();
@@ -179,10 +180,8 @@ $(window).on("load", function() {
             page("/");
         });
     });
+
     page();
-
-
-
 });
 
 

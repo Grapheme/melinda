@@ -21,9 +21,9 @@ audio {
 #bar-layer {
   z-index     : 6;
   position    : fixed;
-  bottom      : -45px;
-  height      :  45px;
-  line-height :  45px;
+  bottom      : -40px;
+  height      :  40px;
+  line-height :  40px;
   width       :  100%;
   clear       :  both;
 
@@ -129,7 +129,7 @@ audio {
   bottom: 0; top: 0; left: 0; right: 0;
 
   margin-top    : 10px;
-  margin-bottom : 55px;
+  margin-bottom : 50px;
   margin-right  : 10px;
   margin-left   : 10px;
 
