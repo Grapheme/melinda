@@ -8,9 +8,14 @@ Melinda использует:
 * CoffeeScript, Express — на стороне сервера
 * CouchDB для хранения данных
 
+### Подготовка базы данных
+Скрипт инициализирует базу данных (откатывает до начального состояния и удаляет все Скоупы!):
+```
+npm run-script scaffold
+```
+
 ### Запуск
 ```
-npm install -g coffee-script
 npm install
 npm start
 ```
