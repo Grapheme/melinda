@@ -182,11 +182,12 @@ audio {
 
 .status-icon {
   display : none;
+  opacity : 0.8;
 }
 .status-icon.fadeout {
   transition-duration        : 0.5s;
   transition-timing-function : ease-out;
-  transform                  : scale(2);
+  transform                  : scale(3);
   opacity                    : 0.0;
 }
 
