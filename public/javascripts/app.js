@@ -115,30 +115,25 @@ $(window).on("load", function() {
     new DragDrop(dragdropLayer[0], function(files) {
         if(files.length <= 0) return;
 
-        var formData = new FormData();
-        formData.append('file', files[0]);
+        var file = files[0];
 
-        createNewScope(function(err) {
-            jQuery.ajax('/files', {
-                type : "POST",
-                processData: false,
-                contentType: false,
-                data: formData
-            })
-            .done(function(data) {
-                var imageSrc = "files/" + data._id;
+        uploadFile(files[0], function(err, data) {
+            if(err) return;
 
+            var fileId = data._id;
+
+            createNewScope(function(err) {
                 var type = files[0].type.substring(0, 5);
                 
                 if(type === "audio") {
                     console.log("Set audio");
 
                     $.post('scopes/' + model._id, {
-                       'audio' : data._id 
+                       'audio' : fileId 
                     }).done(function() {
 
-                        model.audio = data._id;
-                        scope.setAudio("files/" + data._id);
+                        model.audio = fileId;
+                        scope.setAudio("files/" + fileId);
                     });
                 }
 
@@ -146,15 +141,15 @@ $(window).on("load", function() {
                     console.log("Set image");
                     
                     $.post('scopes/' + model._id, {
-                       'image' : data._id 
+                       'image' : fileId 
                     }).done(function() {
 
-                        model.image = data._id;
-                        scope.setImage("files/" + data._id);
+                        model.image = fileId;
+                        scope.setImage("files/" + fileId);
                     });
                 }
             });
-        }); 
+        });          
     });
 
 
@@ -178,7 +173,6 @@ $(window).on("load", function() {
         });
     });
     page();
-
 
 
 
