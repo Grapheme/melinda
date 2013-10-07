@@ -121,17 +121,20 @@ audio {
   background-color: rgba(0,0,0,0.5);
 }
 
+.centered-content {
+  margin: auto;
+  position: absolute;
+  width: 85%;
+  max-width: 50em;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%)
+}
+
 #howto-layer .instructions-image {
   /* See: http://stackoverflow.com/a/3463951 */
   width: auto !important; /* override the width below */
   width: 100%;
   max-width: 100%;
-}
-
-#howto-layer p {
-  max-width : 50em;
-  margin    : 0 auto;
-  padding   : 0 2em;
 }
 
 #howto-layer .share-image { 
