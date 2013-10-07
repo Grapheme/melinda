@@ -33,18 +33,28 @@ $(window).on("load", function() {
             url += window.location.pathname;
         }
 
+        var description = "Melinda lets you create Scopes: interactive kaleidoscopic visualizations that are moving along with the music. #melinda #grapheme";
+        var title = "Check this out!";
+        var shortDescription = "Check this out! #melinda #grapheme";
+
         $("#scope-address").val(url);
        
         $("#facebook-button").attr({
-            "href" : "http://www.facebook.com/sharer/sharer.php?s=100&p[url]=" + location.href + "&p[title]=Check this out!"
+            "href" : "http://www.facebook.com/sharer/sharer.php?s=100&p[url]=" + encodeURIComponent(location.href) 
+                    + "&p[title]=" + encodeURIComponent(title)
+                    + "&p[summary]=" + encodeURIComponent(description)
         });
 
         $("#twitter-button").attr({
-            "href" : "http://twitter.com/share?url=" + location.href + "&text=Check this out!"
+            "href" : "http://twitter.com/share?url=" + encodeURIComponent(location.href)
+                    + "&text=" + encodeURIComponent(shortDescription)
         });
 
         $("#vk-button").attr({
-            "href" : "http://vk.com/share.php?url=" + location.href + "&title=Check this out!"
+            "href" : "http://vk.com/share.php?url=" + encodeURIComponent(location.href) 
+                    + "&title=" + encodeURIComponent(title) 
+                    + "&description=" + encodeURIComponent(description)
+                    + "&image="
         });
         
     }
