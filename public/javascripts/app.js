@@ -25,6 +25,13 @@ $(window).on("load", function() {
         });
     }); 
 
+    
+    // TODO: avoid this
+    $(".status-icon").on("transitionend", function() {
+        $(this).removeClass("fadeout");
+        $(this).hide();
+    });
+
 
     function updateURL() {
         var url = window.location.host;
@@ -117,9 +124,8 @@ $(window).on("load", function() {
 
         var file = files[0];
 
-        uploadFile(files[0], function(err, data) {
-            if(err) return;
-
+        uploadFile(files[0])
+        .done(function(data) {
             var fileId = data._id;
 
             createNewScope(function(err) {
@@ -149,7 +155,8 @@ $(window).on("load", function() {
                     });
                 }
             });
-        });          
+
+        });      
     });
 
 
@@ -176,24 +183,6 @@ $(window).on("load", function() {
 
 
 
-    var mainContainer = $("#main-container");
-    var resizeHandler = function() {
-        $(".centered-image").each(function() {
-            $(this).css({
-                "top"  : 0.5 * ($(window).height() - $(this).height()),
-                "left" : 0.5 * ($(window).width() -  $(this).width())
-            });
-        });
-    };
-
-    $(window).resize(resizeHandler);
-    $(window).resize();   
-
-    // TODO: avoid this
-    $(".status-icon").on("transitionend", function() {
-        $(this).removeClass("fadeout");
-        $(this).hide();
-    });
 });
 
 

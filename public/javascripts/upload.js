@@ -1,15 +1,18 @@
 window.uploadFile = (function() {
 	var busy = false;
 
-	return function(file, callback) {
+	return function(file) {
+		var defer = jQuery.Deferred();
+
 		if(busy) {
-			return callback("Another file is uploading now!");
+			defer.reject();
+			return defer.promise();
 		}
 
 		busy = true;
 		$("#progress-bar").removeClass("hidden");
+
 		var formData = new FormData();
-		
 		formData.append('file', file);
 
 		var xhr = new XMLHttpRequest();
@@ -24,17 +27,20 @@ window.uploadFile = (function() {
 			try {
 				json = JSON.parse(this.response);
 			}catch(err) {};
-			callback(null, json);
+
+			defer.resolve(json);
 		};
 
 		xhr.upload.onprogress = function (event) {
 		  if (event.lengthComputable) {
 		    var progress = (event.loaded / event.total * 100 | 0);
-		    
+		    defer.notify(progress);
 		    $("#progress-bar").width(progress.toFixed(0) + "%");	
 		  }
 		};
 
 		xhr.send(formData);
+
+		return defer.promise();
 	};
 })();
