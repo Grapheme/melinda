@@ -10,7 +10,7 @@ $(window).on("load", function() {
         setTimeout(function() {
             $("#melinda-logo").addClass("fadeout");
             $("#bar-layer").addClass("shown");
-        }, 2000);
+        }, 3000);
     }, 500);   
 
     function toggleHelp() {
