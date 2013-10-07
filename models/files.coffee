@@ -8,19 +8,26 @@ moment  = require "moment"
 
 db = new(cradle.Connection)().database "files"
 
+uploadDir = path.resolve path.join __dirname, "../upload"
+
+if not fs.existsSync uploadDir
+	fs.mkdirSync uploadDir
+
 # Функция вычисляет md5 хеш от файла
 hashFile = (path, callback) ->
 	file = fs.createReadStream path
 	hash = crypto.createHash "md5"
 
+	callbackOnce = _(callback).once()
+
 	file.on "data", (data) ->
 		hash.update data
 
-	file.once "end", ->
-		callback null, hash.digest "hex"
+	file.on "end", ->
+		callbackOnce null, hash.digest "hex"
 
-	file.once "error", (err) ->
-		callback err
+	file.on "error", (err) ->
+		callbackOnce err
 
 
 # Обработчик загрузки файлов
@@ -33,48 +40,37 @@ module.exports.upload = (req, res, next) ->
 	if files.length <= 0
 		return next new Error "Invalid arguments!"
 
-	# Функция, удаляющая временные файлы
-	cleanup = ->
-		_(files).each (f) ->
-			fs.unlink f.path
-
 	# Берем только первый файл
-	file = files[0]
+	file = _(files).first()
 
-	mimeType = file.headers['content-type']
+	# Остальные файлы удаляем
+	_(files).chain()
+		.rest()
+		.each (f) -> fs.unlink f.path
+
 
 	hashFile file.path, (err, hash) ->
 		if err 
-			do cleanup
 			return next new Error "Error hashing file!"
 
+		mimeType  = file.headers['content-type']
+		filename  = "#{ hash }#{ path.extname(file.originalFilename) }"
 		timestamp = moment().unix()
+
+		fullpath  = path.join uploadDir, filename
+
+		fs.rename file.path, fullpath, (err) ->
+			if err
+				return next new Error "Error saving file!"
 			
-		# Сохраняем документ, соответствующий файлу
-		db.save hash,
-			mime 	 : mimeType
-			created  : timestamp
-		, (err, result) ->
-			if err 
-				do cleanup
+			# Сохраняем документ, соответствующий файлу
+			db.save hash,
+				mime 	 : mimeType
+				created  : timestamp
+				filename : filename
+			, (err, result) ->
 				return res.json 
 					_id : hash
-
-			attachmentData = 
-				name: file.originalFilename
-				"Content-Type" : file.headers['content-type']
-
-			# Сохраняем тело файла в базу, используя streaming
-			writeStream = db.saveAttachment result.id, attachmentData, (err, att) ->
-				if err
-					do cleanup
-					return next(err.error)
-
-				return res.json 
-					_id : hash
-
-			readStream = fs.createReadStream file.path
-			readStream.pipe writeStream
 
 
 # Обработчик получения файла по его id
@@ -85,6 +81,9 @@ module.exports.get = (req, res, next) ->
 		if err
 			return next new Error "Error getting file #{err.error}"
 
+		fullpath  = path.join uploadDir, doc.filename
+		res.sendfile fullpath
+
 		# Обновляем время последнего доступа к файлу
 		mergeFields = 
 			accessed : moment().unix()
@@ -92,10 +91,5 @@ module.exports.get = (req, res, next) ->
 
 		db.merge id, mergeFields, (err, doc) ->
 
-		# Отдаем файл поточно
-		attachmentName = _(doc._attachments).keys()[0]
-		readStream = db.getAttachment id, attachmentName, (err) ->
 		
-		res.set "Content-Type", doc.mime
-		readStream.pipe res
 
