@@ -18,5 +18,6 @@ npm-debug.log
 node_modules
 
 upload
+build
 
 .DS_Store
