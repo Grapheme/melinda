@@ -87,7 +87,7 @@ module.exports.get = (req, res, next) ->
 		# Обновляем время последнего доступа к файлу
 		mergeFields = 
 			accessed : moment().unix()
-			hits 	 : 1 + doc.hits?
+			hits 	 : (doc.hits ? 0) + 1
 
 		db.merge id, mergeFields, (err, doc) ->
 

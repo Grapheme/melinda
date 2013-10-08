@@ -53,7 +53,7 @@ exports.read = (req, res, next) ->
         # Обновляем статистику
         mergeFields = 
             accessed : moment().unix()
-            hits     : 1 + doc.hits?
+            hits     : (doc.hits ? 0) + 1
 
         scopes.merge id, mergeFields, (err, doc) ->
 
