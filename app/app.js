@@ -37,7 +37,7 @@ $(window).on("load", function() {
         var description = "Melinda lets you create Scopes: interactive kaleidoscopic visualizations that are moving along with the music. #melinda #grapheme";
         var title = "Check this out!";
         var shortDescription = "Check this out! #melinda #grapheme";
-        var image = location.origin + "/images/melinda-logo.png";
+        var image = location.origin + "/images/share-image.png";
 
         $("#scope-address").val(url);
        
