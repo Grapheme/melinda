@@ -111,6 +111,11 @@ audio {
   margin : 0px 25px;
   display: inline-block;
 }
+
+/* Dirty little fix, don't really like it */
+.fb-like span {
+  margin-top: 6px;
+}
 /* ----------------------------------------------------
   How to layer styles
  ------------------------------------------------------ */

@@ -7,7 +7,7 @@ cradle      = require "cradle"
 app = express()
 
 # Настройки
-app.set "port", process.env.PORT || 80
+app.set "port", process.env.PORT || 3000
 app.set "staticDir", path.join __dirname, "static"
 app.set "uploadDir", path.join __dirname, "upload"
 
