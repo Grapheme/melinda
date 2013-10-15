@@ -20,7 +20,7 @@ $(window).on("load", function() {
             $("#kaleidoscope-layer").css({ "-webkit-filter" : "none" });
     
         } else {
-            $("#howto-layer").fadeIn(200);
+            $("#howto-layer").fadeIn(500);
             $("#kaleidoscope-layer").css({ "-webkit-filter" : "blur(5px)" });
         }
      
