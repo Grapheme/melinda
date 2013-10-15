@@ -14,12 +14,14 @@ $(window).on("load", function() {
     }, 500);   
 
     function toggleHelp() {
-        if( !$("#howto-layer").is(":visible") ) {
-            $("#howto-layer").show(0);
-            $("#kaleidoscope-layer").css({ "-webkit-filter" : "blur(5px)" });
-        } else {
-            $("#howto-layer").hide();
+        if( $("#howto-layer").is(":visible") ) {
+            $("#howto-layer").fadeOut(500);
+            
             $("#kaleidoscope-layer").css({ "-webkit-filter" : "none" });
+    
+        } else {
+            $("#howto-layer").fadeIn(200);
+            $("#kaleidoscope-layer").css({ "-webkit-filter" : "blur(5px)" });
         }
      
     }
