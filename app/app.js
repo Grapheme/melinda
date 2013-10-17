@@ -88,6 +88,7 @@ $(window).on("load", function() {
     };
 
     dragdropLayer.click(function() {
+        if(!AudioAnalyser.supported) return;
 
         if( scope.analyser.isPaused() ) {
             $("#play-image").removeClass("hidden");
@@ -108,16 +109,30 @@ $(window).on("load", function() {
         }
     });
 
-    dragdropLayer.mousemove(function() {
-        var factorx = event.pageX / $(window).width();
-        var factory = event.pageY / $(window).height();
-
-        if(scope.analyser.isPaused() ) {
+    function moveKaleidoscope(factorx, factory) {
+        if(!AudioAnalyser.supported || scope.analyser.isPaused()) {
             scope.kaleidoscope.angleTarget = factorx;
             scope.kaleidoscope.zoomTarget  = 1.0 + 0.5 * factory;
         }
+    }
+
+    dragdropLayer.mousemove(function(event) {
+        moveKaleidoscope(
+            event.pageX / $(window).width(),
+            event.pageY / $(window).height()
+        );
     });
 
+    dragdropLayer.on("touchmove", function(evt) {
+        evt.preventDefault();
+        var originalEvent = evt.originalEvent;
+        
+        var touch = originalEvent.touches[0];  
+        moveKaleidoscope(
+            touch.pageX / $(window).width(),
+            touch.pageY / $(window).height()
+        );
+    });
 
     function dropHandler(files) {
         if(files.length <= 0) return;
