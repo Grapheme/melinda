@@ -88,33 +88,76 @@ $(window).on("load", function() {
     };
 
     dragdropLayer.click(function() {
-        if(!AudioAnalyser.supported) return;
+        if( window.currentDancer ) {
+            if( !window.currentDancer.isPlaying() ) {
+                $("#play-image").removeClass("hidden");
 
-        if( scope.analyser.isPaused() ) {
-            $("#play-image").removeClass("hidden");
+                setTimeout(function() {
+                    $("#play-image").addClass("hidden");
+                }, 0);
 
-            setTimeout(function() {
-                $("#play-image").addClass("hidden");
-            }, 0);
+               window.currentDancer.play();
+            } else {
+                $("#pause-image").removeClass("hidden");
 
-            scope.analyser.play();
-        } else {
-            $("#pause-image").removeClass("hidden");
+                setTimeout(function() {
+                    $("#pause-image").addClass("hidden");
+                }, 0);
 
-            setTimeout(function() {
-                $("#pause-image").addClass("hidden");
-            }, 0);
-
-            scope.analyser.pause();
+                window.currentDancer.pause();
+            }
         }
     });
 
     function moveKaleidoscope(factorx, factory) {
-        if(!AudioAnalyser.supported || scope.analyser.isPaused()) {
-            scope.kaleidoscope.angleTarget = factorx;
-            scope.kaleidoscope.zoomTarget  = 1.0 + 0.5 * factory;
+        if( window.currentDancer && window.currentDancer.isPlaying()) {
+            return;
         }
+        scope.angleTarget = factorx;
+        scope.zoomTarget  = 1.0 + 0.5 * factory;
     }
+
+    var x = 0, v = 0, r = 0;
+
+    
+    function dancerAnalyzeHandler() {
+        var one = 0.15 * x;
+        var two = 100 * this.getFrequency(32, 128);
+        r += 0.1 * (two - r);
+        scope.angleTarget = r;
+        scope.zoomTarget  = 1.0 + 5.0 * one;
+
+        var a = 4;
+        var b = 1;
+        var dt = 0.1;
+
+        var force = a * (-x) + b * (-v);
+        v += force * dt;
+        x += v * dt;
+    }
+
+    function dancerKickHandler(a) {  x = a; }
+
+    function setAudio(audioUrl) {
+        var dancer = new Dancer();
+
+        dancer.bind("loaded", function() {
+            if(window.currentDancer) {
+                window.currentDancer.pause();
+            }
+            dancer.play();
+            window.currentDancer = dancer;
+        });
+
+        dancer.createKick({
+            onKick: dancerKickHandler
+        }).on();
+
+        dancer.after(0, dancerAnalyzeHandler);
+
+        dancer.load({ src: audioUrl });
+    }
+
 
     dragdropLayer.mousemove(function(event) {
         moveKaleidoscope(
@@ -152,7 +195,7 @@ $(window).on("load", function() {
                        'audio' : fileId 
                     }).done(function() {
                         model.audio = fileId;
-                        scope.setAudio("files/" + fileId);
+                        setAudio("files/" + fileId);
                     });
                 }
 
@@ -171,8 +214,8 @@ $(window).on("load", function() {
     }
 
 
-    new DragDrop($("#dragdrop-layer")[0], dropHandler);
-    new DragDrop($("#howto-layer")[0], dropHandler);
+    DragDrop($("#dragdrop-layer")[0], dropHandler);
+    DragDrop($("#howto-layer")[0], dropHandler);
 
     /* -------------------------------------------------------------------- */
     // Application pushState routing
@@ -190,7 +233,7 @@ $(window).on("load", function() {
             window.model = data;
 
             scope.setImage("files/" + model.image);
-            scope.setAudio("files/" + model.audio);
+            setAudio("files/" + model.audio);
         })
         .fail(function() {
             page("/");
