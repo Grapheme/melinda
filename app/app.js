@@ -154,8 +154,19 @@ $(window).on("load", function() {
         }).on();
 
         dancer.after(0, dancerAnalyzeHandler);
+        // Using an audio object
+        var audioElement = new Audio();
 
-        dancer.load({ src: audioUrl });
+
+        document.body.appendChild(audioElement);
+        audioElement.style.display = "none";
+
+        audioElement.addEventListener("canplay", function() {
+            dancer.load( audioElement );
+        });
+
+        audioElement.src = audioUrl;
+        
     }
 
 
