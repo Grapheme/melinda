@@ -12,12 +12,11 @@ app.set "staticDir", path.join __dirname, "static"
 app.set "uploadDir", path.join __dirname, "upload"
 
 # Настройка middleware
-app.use express.favicon()
 app.use express.logger("dev")
 app.use express.bodyParser()
 app.use express.methodOverride()
-app.use app.router
 app.use express.static app.get "staticDir"
+app.use app.router
 app.use express.errorHandler()
 
 #  Обработчики ставим, соответствуя модели REST/CRUD
