@@ -1,3 +1,7 @@
+$(document).ready(function() {
+    Socialite.load( $(".socialite-area")[0] );
+});
+
 $(window).on("load", function() {
     Typekit.load();
 
